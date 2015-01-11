@@ -31,8 +31,14 @@ func (e *Error) ErrorOrNil() error {
 	if len(e.Errors) == 0 {
 		return nil
 	}
+	
+	for _,error := range e.Errors {
+		if error != nil {
+			return e
+		}
+	}
 
-	return e
+	return nil
 }
 
 func (e *Error) GoString() string {
