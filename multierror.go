@@ -2,6 +2,7 @@ package multierror
 
 import (
 	"fmt"
+	"errors"
 )
 
 // Error is an error type to track multiple errors. This is used to
@@ -32,13 +33,15 @@ func (e *Error) ErrorOrNil() error {
 		return nil
 	}
 	
-	for _,error := range e.Errors {
-		if error != nil {
-			return e
+	var s string
+	
+	for i,err := range e.Errors {
+		if err != nil {
+			s += fmt.Sprintf("(%d) %s", i, err.Error())
 		}
 	}
 
-	return nil
+	return errors.New(s)
 }
 
 func (e *Error) GoString() string {
